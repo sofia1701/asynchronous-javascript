@@ -1,4 +1,5 @@
 const request = require('request');
+const axios = require('axios');
 
 const mainController = (req, res) => {
   res.send({
@@ -9,6 +10,7 @@ const mainController = (req, res) => {
 const jokesController = (req, res) => {
   request('https://api.icndb.com/jokes', (error, jokesApiResponse) => {
     if (error) {
+      // eslint-disable-next-line
       console.log(error);
     }
     const parsedResponse = JSON.parse(jokesApiResponse.body);
@@ -17,9 +19,15 @@ const jokesController = (req, res) => {
 };
 
 const randomJokeController = (req, res) => {
-  res.send({
-    message: 'This is a random joke endpoint',
-  });
+  axios
+    .get('https://api.icndb.com/jokes/random?exclude=[explicit]')
+    .then(response => {
+      res.send({ randomJoke: response.data.value });
+    })
+    .catch(error => {
+      // eslint-disable-next-line
+      console.log(error);
+    });
 };
 
 const personalizedJokeController = (req, res) => {
