@@ -1,3 +1,5 @@
+const request = require('request');
+
 const mainController = (req, res) => {
   res.send({
     message: 'Welcome to my jokes API!',
@@ -5,20 +7,24 @@ const mainController = (req, res) => {
 };
 
 const jokesController = (req, res) => {
-  res.send({
-    message: 'This is the all jokes endpoint',
+  request('https://api.icndb.com/jokes', (error, jokesApiResponse) => {
+    if (error) {
+      console.log(error);
+    }
+    const parsedResponse = JSON.parse(jokesApiResponse.body);
+    res.send({ jokes: parsedResponse.value });
   });
 };
 
 const randomJokeController = (req, res) => {
   res.send({
-    message: 'This is a ramdom joke endpoint',
+    message: 'This is a random joke endpoint',
   });
 };
 
 const personalizedJokeController = (req, res) => {
   res.send({
-    message: 'Reached the personal joke endpoint',
+    message: 'This is a personal joke endpoint',
   });
 };
 
