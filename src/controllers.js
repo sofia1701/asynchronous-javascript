@@ -35,7 +35,7 @@ const personalizedJokeController = async (req, res) => {
 
   try {
     const response = await axios.get(
-      `https://api.icndb.com/jokes/random?firstName=${first}&lastName=${last}&exclude=[excplicit]`,
+      `https://api.icndb.com/jokes/random?firstName=${first}&lastName=${last}&exclude=[explicit]`,
     );
 
     res.send({ personalJoke: response.data.value });
