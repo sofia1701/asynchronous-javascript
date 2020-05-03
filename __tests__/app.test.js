@@ -7,13 +7,12 @@ const nock = require('nock');
 const app = require('../src/app');
 
 describe('GET / Homepage', () => {
-  it('should respond with some homepage markup', done => {
+  it('should respond with some homepage markup', async () => {
     request(app)
       .get('/')
       .then(res => {
         expect(res.statusCode).toEqual(200);
         expect(res.text).toContain('Welcome to my jokes API!');
-        done();
       });
   });
 });
