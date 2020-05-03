@@ -35,11 +35,9 @@ const personalizedJokeController = async (req, res) => {
     const response = await axios.get(
       `https://api.icndb.com/jokes/random?firstName=${first}&lastName=${last}&exclude=[explicit]`,
     );
-
     res.send({ personalJoke: response.data.value });
   } catch (error) {
-    // eslint-disable-next-line
-    console.log(error);
+    return res.status(error.statusCode).send({ error: error.message });
   }
 };
 
