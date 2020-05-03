@@ -5,7 +5,8 @@
   "dependencies": {
     "@babel/runtime": "^7.9.6",
     "axios": "^0.19.2",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "request": "^2.88.2"
   },
   "scripts": {
     "start": "nodemon index.js",

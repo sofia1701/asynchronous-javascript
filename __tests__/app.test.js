@@ -19,7 +19,7 @@ describe('GET / Homepage', () => {
 });
 
 describe('GET /jokes', () => {
-  it('GET / should respond with a jokes list', done => {
+  it('GET / should respond with a jokes list', async () => {
     const mockResponse = {
       type: 'success',
       value: [
@@ -54,10 +54,9 @@ describe('GET /jokes', () => {
             joke: 'i am another joke',
           },
         ]);
-        done();
       });
   });
-  it('Should respond with an error message', done => {
+  it('Should respond with an error message', async () => {
     nock('https://api.icndb.com')
       .get('/jokes')
       .replyWithError({ statusCode: 500, message: 'That is an internal server error' });
@@ -66,13 +65,12 @@ describe('GET /jokes', () => {
       .then(res => {
         expect(res.statusCode).toEqual(500);
         expect(res.body.error).toEqual('That is an internal server error');
-        done();
       });
   });
 });
 
 describe('GET /jokes/random', () => {
-  it('should respond with a random joke message', done => {
+  it('should respond with a random joke message', async () => {
     const mockResponse = {
       type: 'success',
       value: {
@@ -94,10 +92,9 @@ describe('GET /jokes/random', () => {
           id: 115,
           joke: 'i am a random joke',
         });
-        done();
       });
   });
-  it('should respond with an error message', done => {
+  it('should respond with an error message', async () => {
     nock('https://api.icndb.com')
       .get('/jokes/random')
       .query({ exclude: '[explicit]' })
@@ -107,7 +104,6 @@ describe('GET /jokes/random', () => {
       .then(res => {
         expect(res.statusCode).toEqual(404);
         expect(res.body.error).toEqual('Page is not found');
-        done();
       });
   });
 });
