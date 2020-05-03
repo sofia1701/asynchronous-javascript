@@ -1,0 +1,13 @@
+html,
+body {
+  height: 100%;
+  font-family: "Press Start 2P", cursive;
+  background-color: powderblue;
+}
+
+body {
+  background-color: pink;
+  display: flex;
+  justify-content: center; /* main axis, horizontal */
+  align-items: center; /* cross axis, vertical */
+}
