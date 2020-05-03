@@ -58,41 +58,56 @@ describe('GET /jokes', () => {
   it('Should respond with an error message', done => {
     nock('https://api.icndb.com')
       .get('/jokes')
-      .replyWithError({ statusCode: 500, message: 'That is an error' });
+      .replyWithError({ statusCode: 500, message: 'That is an internal server error' });
     request(app)
       .get('/jokes')
       .then(res => {
         expect(res.statusCode).toEqual(500);
-        expect(res.body.error).toEqual('That is an error');
+        expect(res.body.error).toEqual('That is an internal server error');
         done();
       });
   });
 });
 
-it('GET / should respond with a random joke message', done => {
-  const mockResponse = {
-    type: 'success',
-    value: {
-      id: 115,
-      joke: 'i am a random joke',
-      categories: [],
-    },
-  };
-  nock('https://api.icndb.com')
-    .get('/jokes/random')
-    .query({ exclude: '[explicit]' })
-    .reply(200, mockResponse);
-  request(app)
-    .get('/jokes/random')
-    .then(res => {
-      expect(res.statusCode).toEqual(200);
-      expect(res.body.randomJoke).toEqual({
-        categories: [],
+describe('GET /jokes/random', () => {
+  it('should respond with a random joke message', done => {
+    const mockResponse = {
+      type: 'success',
+      value: {
         id: 115,
         joke: 'i am a random joke',
+        categories: [],
+      },
+    };
+    nock('https://api.icndb.com')
+      .get('/jokes/random')
+      .query({ exclude: '[explicit]' })
+      .reply(200, mockResponse);
+    request(app)
+      .get('/jokes/random')
+      .then(res => {
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.randomJoke).toEqual({
+          categories: [],
+          id: 115,
+          joke: 'i am a random joke',
+        });
+        done();
       });
-      done();
-    });
+  });
+  it('should respond with an error message', done => {
+    nock('https://api.icndb.com')
+      .get('/jokes/random')
+      .query({ exclude: '[explicit]' })
+      .replyWithError({ statusCode: 404, message: 'Page is not found' });
+    request(app)
+      .get('/jokes/random')
+      .then(res => {
+        expect(res.statusCode).toEqual(404);
+        expect(res.body.error).toEqual('Page is not found');
+        done();
+      });
+  });
 });
 
 it('GET / should respond with a personal joke message', async () => {
